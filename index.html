@@ -109,7 +109,7 @@
 
   .hero-sub {
     margin-top:1.5rem; font-size:1.15rem; color: var(--muted);
-    max-width:580px; line-height:1.7;
+max-width:580px; line-height:1.7;
     animation: fadeUp .6s .2s ease both;
   }
   .hero-sub b { color: var(--text); }
@@ -206,7 +206,7 @@
   }
   .project-card:hover { border-color: rgba(0,229,255,0.4); transform:translateY(-4px); }
   
-  /* FIXED: Added pointer-events: none to prevent the hover pseudo-element from blocking click events */
+  /* FIXED: Added pointer-events: none to ensure buttons inside the card are fully clickable */
   .project-card::before {
     content:''; position:absolute; inset:0;
     background: radial-gradient(circle at top left, rgba(0,229,255,0.06), transparent 60%);
@@ -472,7 +472,7 @@
               <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Cụm từ chính xác</td>
               <td style="border:1px solid var(--border);padding:.6rem .8rem;"><code style="background:rgba(124,58,237,0.2);color:#a78bfa;padding:.15rem .4rem;border-radius:4px;font-size:.78rem;">"inverse kinematics robotics"</code></td>
               <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--accent);font-weight:600;">210.000</td>
-              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Chính xác cao, tập đúng vào bài toán động học ngược</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Chính xác cao, tập trung đúng vào bài toán động học ngược</td>
             </tr>
             <tr style="background:rgba(255,255,255,0.02);">
               <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Toán tử kết hợp</td>
