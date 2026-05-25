@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyễn Tiến Tài — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0f1a;
+    --bg2: #0e1525;
+    --bg3: #131d30;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --text: #e8edf5;
+    --muted: #6b7a99;
+    --border: rgba(0,229,255,0.12);
+    --card: rgba(255,255,255,0.04);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 0 3rem; height:64px;
+    background: rgba(10,15,26,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display:flex; align-items:center; gap:12px;
+    font-family:'Be Vietnam Pro',sans-serif; font-weight:800; font-size:1rem;
+    letter-spacing:0.1em; text-transform:uppercase;
+  }
+  .logo-box {
+    width:36px; height:36px; background: linear-gradient(135deg,var(--accent2),var(--accent));
+    display:flex; align-items:center; justify-content:center;
+    font-size:.9rem; font-weight:800; color:#fff; border-radius:6px;
+  }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a {
+    color: var(--muted); text-decoration:none; font-size:.8rem;
+    letter-spacing:.12em; text-transform:uppercase; font-family:'JetBrains Mono',monospace;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding: 8rem 3rem 4rem;
+    position:relative; overflow:hidden;
+  }
+
+  /* Grid background */
+  #hero::after {
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    pointer-events:none;
+  }
+
+  .hero-tag {
+    display:inline-flex; align-items:center; gap:8px;
+    background: rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.2);
+    color: var(--accent); padding:.4rem 1rem; border-radius:100px;
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; letter-spacing:.1em;
+    margin-bottom:2rem; width:fit-content;
+    animation: fadeUp .6s ease both;
+  }
+  .hero-tag::before { content:'◆'; font-size:.5rem; }
+
+  h1.hero-name {
+    font-family:'Be Vietnam Pro',sans-serif; font-weight:800;
+    font-size: clamp(3rem,8vw,7rem);
+    line-height:1; letter-spacing:-0.02em;
+    animation: fadeUp .6s .1s ease both;
+  }
+  h1.hero-name span {
+    display:block; color: var(--accent);
+    -webkit-text-stroke: 2px var(--accent);
+    color: transparent;
+  }
+  h1.hero-name strong { color: var(--text); }
+
+  .hero-sub {
+    margin-top:1.5rem; font-size:1.15rem; color: var(--muted);
+    max-width:580px; line-height:1.7;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .hero-sub b { color: var(--text); }
+
+  .hero-cards {
+    display:flex; gap:1rem; margin-top:3rem; flex-wrap:wrap;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .hero-card {
+    background: var(--card); border:1px solid var(--border);
+    padding:.8rem 1.4rem; border-radius:10px;
+    font-size:.82rem; color: var(--muted);
+  }
+  .hero-card span { color: var(--accent); font-weight:600; display:block; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; margin-bottom:.2rem; font-family:'JetBrains Mono',monospace; }
+
+  .hero-cta {
+    display:flex; gap:1rem; margin-top:2.5rem; flex-wrap:wrap;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .btn {
+    padding:.75rem 1.8rem; border-radius:8px; font-size:.85rem;
+    font-family:'Be Vietnam Pro',sans-serif; font-weight:700; cursor:pointer;
+    text-decoration:none; letter-spacing:.05em; transition: all .2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--bg);
+    border:1px solid var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border:1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:.5rem;
+    color:var(--muted); font-size:.7rem; letter-spacing:.1em; font-family:'JetBrains Mono',monospace;
+    animation: fadeUp .6s .8s ease both;
+  }
+  .scroll-line {
+    width:1px; height:48px;
+    background: linear-gradient(var(--accent), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%,100%{opacity:0;transform:scaleY(0) translateY(-100%)} 50%{opacity:1;transform:scaleY(1) translateY(0)} }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 3rem; position:relative; }
+
+  .section-header {
+    display:flex; align-items:center; gap:1rem; margin-bottom:3rem;
+  }
+  .section-num {
+    font-family:'JetBrains Mono',monospace; font-size:.7rem;
+    color:var(--accent); letter-spacing:.2em;
+  }
+  .section-title {
+    font-family:'Be Vietnam Pro',sans-serif; font-size:2.2rem; font-weight:800;
+    letter-spacing:-.02em;
+  }
+  .section-line { flex:1; height:1px; background: var(--border); }
+
+  /* ── INTRO ── */
+  #intro { background: var(--bg2); }
+  .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; }
+  .intro-text p { color:var(--muted); line-height:1.85; font-size:1rem; margin-bottom:1.2rem; }
+  .intro-text p b { color: var(--text); }
+
+  .intro-stats { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .stat-card {
+    background: var(--bg3); border:1px solid var(--border);
+    padding:1.5rem; border-radius:12px; position:relative; overflow:hidden;
+  }
+  .stat-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .stat-num { font-family:'Be Vietnam Pro',sans-serif; font-size:2.2rem; font-weight:800; color:var(--accent); }
+  .stat-label { font-size:.78rem; color:var(--muted); margin-top:.3rem; text-transform:uppercase; letter-spacing:.1em; font-family:'JetBrains Mono',monospace; }
+
+  /* ── DỰ ÁN ── */
+  #projects { background: var(--bg); }
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.5rem; }
+
+  .project-card {
+    background: var(--card); border:1px solid var(--border);
+    border-radius:14px; padding:1.8rem; position:relative; overflow:hidden;
+    transition: border-color .3s, transform .3s;
+    cursor:default;
+  }
+  .project-card:hover { border-color: rgba(0,229,255,0.4); transform:translateY(-4px); }
+  .project-card::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(circle at top left, rgba(0,229,255,0.06), transparent 60%);
+    opacity:0; transition: opacity .3s;
+  }
+  .project-card:hover::before { opacity:1; }
+
+  .project-num {
+    font-family:'JetBrains Mono',monospace; font-size:.65rem;
+    color:var(--accent); letter-spacing:.15em; margin-bottom:1rem;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .project-num::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .project-title {
+    font-family:'Be Vietnam Pro',sans-serif; font-size:1rem; font-weight:700;
+    margin-bottom:.6rem; line-height:1.4;
+  }
+  .project-ref { font-size:.75rem; color:var(--accent2); font-family:'JetBrains Mono',monospace; margin-bottom:.8rem; }
+  .project-desc { font-size:.87rem; color:var(--muted); line-height:1.7; }
+
+  .project-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.2rem; }
+  .tag {
+    background: rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.25);
+    color: #a78bfa; padding:.25rem .7rem; border-radius:100px;
+    font-size:.7rem; font-family:'JetBrains Mono',monospace; letter-spacing:.05em;
+  }
+
+  .project-footer {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:1.2rem; padding-top:1rem; border-top:1px solid var(--border);
+  }
+  .btn-download {
+    display:inline-flex; align-items:center; gap:.5rem;
+    background: rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.25);
+    color: var(--accent); padding:.4rem 1rem; border-radius:6px;
+    font-size:.75rem; font-family:'JetBrains Mono',monospace;
+    text-decoration:none; transition: all .2s; letter-spacing:.05em;
+  }
+  .btn-download:hover { background: rgba(0,229,255,0.15); border-color: var(--accent); }
+  .btn-download.pending {
+    color: var(--muted); border-color: rgba(255,255,255,0.1);
+    background: transparent; cursor: default; pointer-events:none;
+  }
+  .file-type {
+    font-size:.68rem; font-family:'JetBrains Mono',monospace;
+    color: var(--muted); letter-spacing:.1em;
+  }
+
+  /* ── TỔNG KẾT ── */
+  #summary { background: var(--bg2); }
+  .summary-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+
+  .summary-block { margin-bottom:2rem; }
+  .summary-block h3 {
+    font-family:'Be Vietnam Pro',sans-serif; font-weight:700; font-size:1.1rem;
+    color:var(--accent); margin-bottom:1rem;
+    display:flex; align-items:center; gap:.5rem;
+  }
+  .summary-block p { color:var(--muted); line-height:1.8; font-size:.92rem; }
+
+  .skill-list { list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+  .skill-list li {
+    display:flex; align-items:center; gap:.75rem;
+    color: var(--muted); font-size:.9rem;
+  }
+  .skill-list li::before {
+    content:'▸'; color:var(--accent); font-size:.75rem; flex-shrink:0;
+  }
+  .skill-list li b { color:var(--text); }
+
+  .challenge-list { list-style:none; display:flex; flex-direction:column; gap:.8rem; }
+  .challenge-list li {
+    background: var(--bg3); border-left:3px solid var(--accent3);
+    padding:.75rem 1rem; border-radius:0 8px 8px 0;
+    font-size:.88rem; color:var(--muted); line-height:1.6;
+  }
+
+  /* ── KỸ NĂNG ── */
+  #skills { background: var(--bg3); }
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; }
+  .skill-card {
+    background: var(--card); border:1px solid var(--border);
+    border-radius:10px; padding:1.2rem; text-align:center;
+    transition: border-color .2s, background .2s;
+  }
+  .skill-card:hover { border-color:rgba(0,229,255,0.3); background:rgba(0,229,255,0.04); }
+  .skill-icon { font-size:2rem; margin-bottom:.6rem; }
+  .skill-name { font-family:'Be Vietnam Pro',sans-serif; font-size:.85rem; font-weight:700; }
+  .skill-level { font-size:.7rem; color:var(--muted); margin-top:.3rem; font-family:'JetBrains Mono',monospace; }
+
+  /* ── PRINCIPLES ── */
+  #principles { background: var(--bg); }
+  .principles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1.2rem; }
+  .principle-card {
+    background: var(--card); border:1px solid var(--border);
+    border-radius:12px; padding:1.5rem; display:flex; gap:1rem; align-items:flex-start;
+  }
+  .principle-num {
+    font-family:'Be Vietnam Pro',sans-serif; font-size:2rem; font-weight:800;
+    color:rgba(0,229,255,0.15); line-height:1; flex-shrink:0; min-width:2.5rem;
+  }
+  .principle-card h4 { font-family:'Be Vietnam Pro',sans-serif; font-weight:700; font-size:.95rem; margin-bottom:.4rem; }
+  .principle-card p { font-size:.83rem; color:var(--muted); line-height:1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2); border-top:1px solid var(--border);
+    padding:3rem; text-align:center;
+  }
+  .footer-logo {
+    font-family:'Be Vietnam Pro',sans-serif; font-weight:800; font-size:1.5rem;
+    letter-spacing:-.02em; margin-bottom:1rem;
+  }
+  .footer-logo span { color:var(--accent); }
+  footer p { color:var(--muted); font-size:.85rem; margin-bottom:.4rem; }
+  .footer-email { color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:.85rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .reveal {
+    opacity:0; transform:translateY(32px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:768px){
+    nav { padding:0 1.5rem; }
+    .nav-links { display:none; }
+    section { padding:4rem 1.5rem; }
+    #hero { padding:6rem 1.5rem 3rem; }
+    .intro-grid, .summary-grid { grid-template-columns:1fr; }
+    h1.hero-name { font-size:3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-box">NT</div>
+    NGUYỄN TIẾN TÀI
+  </div>
+  <ul class="nav-links">
+    <li><a href="#intro">Giới thiệu</a></li>
+    <li><a href="#projects">Dự án</a></li>
+    <li><a href="#skills">Kỹ năng</a></li>
+    <li><a href="#summary">Tổng kết</a></li>
+    <li><a href="#principles">Nguyên tắc</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">Hồ sơ kỹ thuật số · Portfolio 2026</div>
+  <h1 class="hero-name">
+    <strong>NGUYỄN</strong>
+    <span>TIẾN TÀI</span>
+  </h1>
+  <p class="hero-sub">
+    Sinh viên <b>Cơ điện tử</b> — Trường Đại học Công nghệ ĐHQGHN (UET).<br>
+    Rèn luyện tư duy số, ứng dụng AI có trách nhiệm, xây dựng nền tảng kỹ năng cho kỷ nguyên công nghệ.
+  </p>
+  <div class="hero-cards">
+    <div class="hero-card"><span>Ngành</span>Cơ điện tử · UET</div>
+    <div class="hero-card"><span>Môn học</span>Nhập môn Công nghệ số & ƯDTTNT</div>
+    <div class="hero-card"><span>Liên hệ</span>25021446@vnu.edu.vn</div>
+    <div class="hero-card"><span>Địa chỉ</span>Hà Nội, Việt Nam</div>
+  </div>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">◆ Xem Dự án</a>
+    <a href="#summary" class="btn btn-outline">Tổng kết →</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- GIỚI THIỆU -->
+<section id="intro">
+  <div class="section-header reveal">
+    <span class="section-num">01 //</span>
+    <h2 class="section-title">Giới thiệu bản thân</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="intro-grid">
+    <div class="intro-text reveal">
+      <p>Xin chào! Mình là <b>Nguyễn Tiến Tài</b>, sinh viên ngành <b>Cơ điện tử</b> tại Trường Đại học Công nghệ – ĐHQGHN (UET). Mình có niềm đam mê với công nghệ, lập trình và các hệ thống tự động hóa thông minh.</p>
+      <p>Portfolio này được xây dựng trong khuôn khổ môn học <b>Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo</b>, nhằm tổng hợp và thể hiện 6 kỹ năng số cốt lõi đã học.</p>
+      <p><b>Mục tiêu học tập:</b> Xây dựng nền tảng vững chắc về kỹ thuật cơ điện tử, đồng thời tích hợp công nghệ số và trí tuệ nhân tạo vào thiết kế hệ thống. Hướng đến trở thành kỹ sư có tư duy sáng tạo và ứng dụng công nghệ hiện đại.</p>
+      <p><b>Mục tiêu Portfolio:</b> Thể hiện các kỹ năng số đã học, hệ thống hóa kết quả các bài tập thành phần, tạo nền tảng giới thiệu năng lực bản thân trong tương lai.</p>
+    </div>
+    <div class="intro-stats reveal">
+      <div class="stat-card">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Bài tập hoàn thành</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Tỷ lệ hoàn thành</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">AI</div>
+        <div class="stat-label">Tích hợp công cụ AI</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">2026</div>
+        <div class="stat-label">Năm học</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DỰ ÁN -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-num">02 //</span>
+    <h2 class="section-title">Các bài tập & Dự án</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 01</div>
+      <div class="project-title">Quản lý tệp và thư mục</div>
+      <div class="project-ref">Mục 1.4 · Thao tác cơ bản với tệp tin</div>
+      <div class="project-desc">Xây dựng cấu trúc thư mục khoa học, áp dụng quy tắc đặt tên tệp nhất quán theo chuẩn <code>YYYYMMDD_MônHọc_TênFile</code>. Trình bày cấu trúc thư mục tối ưu kèm ảnh chụp minh họa.</div>
+      <div class="project-tags"><span class="tag">File System</span><span class="tag">Naming Convention</span></div>
+      <div class="project-footer">
+        <span class="file-type">PDF</span>
+        <a href="https://drive.google.com/file/d/1CXosSZ_RJ9SdF4evCTpBGkbGPtbn1ByI/view?usp=sharing" target="_blank" class="btn-download">↓ Xem bài tập</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 02</div>
+      <div class="project-title">Tìm kiếm & đánh giá thông tin học thuật</div>
+      <div class="project-ref">Mục 2.4 · Tìm kiếm học thuật nâng cao</div>
+      <div class="project-desc">Sử dụng các toán tử tìm kiếm nâng cao (<code>site:</code>, <code>filetype:</code>, <code>AND/OR</code>) trên Google Scholar. Lập bảng đánh giá nguồn tin theo tiêu chí: tác giả, năm xuất bản, độ uy tín.</div>
+      <div class="project-tags"><span class="tag">Google Scholar</span><span class="tag">Boolean Search</span><span class="tag">Đánh giá nguồn</span></div>
+
+      <div style="margin-top:1.2rem;overflow-x:auto;">
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;">▸ BẢNG KẾT QUẢ TÌM KIẾM VÀ ĐÁNH GIÁ</p>
+        <table style="width:100%;border-collapse:collapse;font-size:.8rem;">
+          <thead>
+            <tr>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Kỹ thuật tìm kiếm</th>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Cú pháp sử dụng</th>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Số lượng kết quả</th>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Đánh giá độ chính xác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Cụm từ chính xác</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;"><code style="background:rgba(124,58,237,0.2);color:#a78bfa;padding:.15rem .4rem;border-radius:4px;font-size:.78rem;">"inverse kinematics robotics"</code></td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--accent);font-weight:600;">210.000</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Chính xác cao, tập trung đúng vào bài toán động học ngược</td>
+            </tr>
+            <tr style="background:rgba(255,255,255,0.02);">
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Toán tử kết hợp</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;"><code style="background:rgba(124,58,237,0.2);color:#a78bfa;padding:.15rem .4rem;border-radius:4px;font-size:.78rem;">PID AND (tuning OR optimization) -hobby</code></td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--accent);font-weight:600;">55.000</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Lọc được các kỹ thuật chỉnh định PID chuyên sâu, loại bỏ các hướng dẫn đơn giản</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Giới hạn trang web</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;"><code style="background:rgba(124,58,237,0.2);color:#a78bfa;padding:.15rem .4rem;border-radius:4px;font-size:.78rem;">site:ieee.org "ROS 2 navigation"</code></td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--accent);font-weight:600;">8.000</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Cực kỳ uy tín, chỉ lấy thông tin từ kho lưu trữ khoa học IEEE</td>
+            </tr>
+            <tr style="background:rgba(255,255,255,0.02);">
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Tìm kiếm loại file</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;"><code style="background:rgba(124,58,237,0.2);color:#a78bfa;padding:.15rem .4rem;border-radius:4px;font-size:.78rem;">filetype:pdf "robotic arm control system"</code></td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--accent);font-weight:600;">4.200</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Tìm được các bài giảng và tài liệu kỹ thuật chất lượng cao</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="project-footer">
+        <span class="file-type">DOCX</span>
+        <a href="https://drive.google.com/file/d/1GTf8PPB4uqVtWNop7IGDdpUFKxizXrBf/view?usp=sharing" target="_blank" class="btn-download">↓ Xem bài tập</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 03</div>
+      <div class="project-title">Viết Prompt hiệu quả cho AI</div>
+      <div class="project-ref">Mục 3.4 · Prompt Engineering</div>
+      <div class="project-desc">Áp dụng kỹ thuật Prompt Engineering để cải thiện chất lượng đầu ra từ AI. So sánh Prompt ban đầu và Prompt cải tiến, trình bày kết quả đầu ra trước và sau khi tối ưu.</div>
+      <div class="project-tags"><span class="tag">Prompt Engineering</span><span class="tag">ChatGPT</span><span class="tag">AI Output</span></div>
+
+      <div style="margin-top:1.2rem;overflow-x:auto;">
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:.6rem;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;">▸ BẢNG SO SÁNH KẾT QUẢ TRƯỚC VÀ SAU KHI CẢI TIẾN</p>
+        <table style="width:100%;border-collapse:collapse;font-size:.8rem;">
+          <thead>
+            <tr>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Tiêu chí so sánh</th>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Prompt ban đầu (Chưa tối ưu)</th>
+              <th style="background:rgba(0,229,255,0.08);border:1px solid var(--border);padding:.6rem .8rem;text-align:left;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.72rem;">Prompt cải tiến (Chuẩn Prompt Engineering)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Cấu trúc Prompt</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Chỉ có yêu cầu chung (Task), thiếu ngữ cảnh và vai trò.</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);">Đầy đủ cấu trúc nâng cao: <b>Role → Context → Task → Constraint</b></td>
+            </tr>
+            <tr style="background:rgba(255,255,255,0.02);">
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Kết quả đầu ra từ AI</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);">Code sơ sài, mang tính lý thuyết, không có xử lý ngoại lệ và khó áp dụng ngay.</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);">Code chuẩn hóa, chia hàm rõ ràng, tối ưu hiệu năng và có thể chạy thử nghiệm được ngay.</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);font-weight:600;">Phân tích cơ chế AI</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--muted);"><b style="color:#f87171;">Mơ hồ (Ambiguity):</b> Thuật toán Attention tự đoán ý dựa trên xác suất từ ngữ phổ biến, dẫn đến câu trả lời chung chung.</td>
+              <td style="border:1px solid var(--border);padding:.6rem .8rem;color:var(--text);"><b style="color:#4ade80;">Thu hẹp không gian vector:</b> Ép AI tập trung trọng số vào các Token chuyên ngành, giảm thiểu tối đa hiện tượng ảo tưởng (Hallucination).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="project-footer">
+        <span class="file-type">PDF</span>
+        <a href="https://drive.google.com/file/d/1X7oL6L4G1Lgf_dGCEs_qv2b7dkCAtmF0/view?usp=sharing" target="_blank" class="btn-download">↓ Xem bài tập</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 04</div>
+      <div class="project-title">Công cụ hợp tác trực tuyến</div>
+      <div class="project-ref">Mục 4.4 · Hợp tác nhóm số</div>
+      <div class="project-desc">Sử dụng công cụ quản lý dự án nhóm và phối hợp làm việc trực tuyến. Phân công nhiệm vụ, theo dõi tiến độ nhóm, minh chứng ảnh chụp màn hình thực tế.</div>
+      <div class="project-tags"><span class="tag">Notion</span><span class="tag">Google Workspace</span><span class="tag">Collaboration</span></div>
+      <div class="project-footer">
+        <span class="file-type">DOCX</span>
+        <a href="https://docs.google.com/document/d/1apPhx2800jcRD3vJ34n3E8VTH5ZonT86/preview" target="_blank" class="btn-download">↓ Xem bài tập</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 05</div>
+      <div class="project-title">AI tạo sinh hỗ trợ sáng tạo nội dung</div>
+      <div class="project-ref">Mục 5.4 · Generative AI</div>
+      <div class="project-desc">Tạo ra sản phẩm nội dung số hoàn thiện có sự hỗ trợ của AI: hình ảnh, video hoặc bài viết. Trình bày quy trình sử dụng công cụ AI và đánh giá chất lượng sản phẩm cuối.</div>
+      <div class="project-tags"><span class="tag">Canva AI</span><span class="tag">Python</span><span class="tag">Robot Simulation</span><span class="tag">Computer Vision</span></div>
+      <div class="project-footer">
+        <span class="file-type">PDF · PPTX · PY</span>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+          <a href="https://drive.google.com/file/d/1lnOqiP3zcqbx9oqyCRMfNs5rCoNrQngx/view?usp=sharing" target="_blank" class="btn-download">↓ Bài tập</a>
+          <a href="Python_Robot_NTT.pptx" download class="btn-download">↓ Slide PPTX</a>
+          <a href="robot_simulation.py" download class="btn-download">↓ Code Python</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">BÀI 06</div>
+      <div class="project-title">Sử dụng AI có trách nhiệm</div>
+      <div class="project-ref">Mục 6.4 · AI Ethics & Responsibility</div>
+      <div class="project-desc">Xây dựng bộ nguyên tắc cá nhân về sử dụng AI có trách nhiệm dựa trên nghiên cứu thực tế. Trình bày 5 nguyên tắc cốt lõi về liêm chính học thuật trong thời đại AI.</div>
+      <div class="project-tags"><span class="tag">AI Ethics</span><span class="tag">Academic Integrity</span><span class="tag">Responsible AI</span></div>
+      <div class="project-footer">
+        <span class="file-type">PDF</span>
+        <a href="https://docs.google.com/document/d/1w-WKh0e-h-kemK6M65YPF4L6LAD1bhja/preview" target="_blank" class="btn-download">↓ Xem bài tập</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- KỸ NĂNG SỐ -->
+<section id="skills">
+  <div class="section-header reveal">
+    <span class="section-num">03 //</span>
+    <h2 class="section-title">Kỹ năng số đã học</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal"><div class="skill-icon">🗂️</div><div class="skill-name">Quản lý dữ liệu</div><div class="skill-level">FILE SYSTEM</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🔍</div><div class="skill-name">Tìm kiếm học thuật</div><div class="skill-level">BOOLEAN SEARCH</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🤖</div><div class="skill-name">Prompt Engineering</div><div class="skill-level">AI INTERACTION</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">👥</div><div class="skill-name">Hợp tác số</div><div class="skill-level">TEAM COLLABORATION</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🎨</div><div class="skill-name">AI Sáng tạo</div><div class="skill-level">GENERATIVE AI</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">⚖️</div><div class="skill-name">AI có trách nhiệm</div><div class="skill-level">AI ETHICS</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🐍</div><div class="skill-name">Python cơ bản</div><div class="skill-level">PROGRAMMING</div></div>
+    <div class="skill-card reveal"><div class="skill-icon">📊</div><div class="skill-name">Phân tích dữ liệu</div><div class="skill-level">DATA ANALYSIS</div></div>
+  </div>
+</section>
+
+<!-- TỔNG KẾT -->
+<section id="summary">
+  <div class="section-header reveal">
+    <span class="section-num">04 //</span>
+    <h2 class="section-title">Tổng kết & Cảm nhận</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="summary-grid">
+    <div>
+      <div class="summary-block reveal">
+        <h3>💡 Trải nghiệm & Cảm nhận</h3>
+        <p>Qua quá trình thực hiện Portfolio, mình nhận ra công nghệ số không chỉ là công cụ mà còn là tư duy. Mỗi kỹ năng đều có logic và nguyên tắc riêng cần học một cách có hệ thống. Việc xây dựng Portfolio giúp mình nhìn lại toàn bộ hành trình học tập và thấy rõ sự tiến bộ của bản thân.</p>
+      </div>
+      <div class="summary-block reveal">
+        <h3>⭐ Điểm tâm đắc nhất</h3>
+        <p>Phần <b>Viết Prompt hiệu quả</b> — thay đổi hoàn toàn cách mình tương tác với AI. Biết cách đặt ngữ cảnh, vai trò và yêu cầu cụ thể giúp nhận kết quả chất lượng hơn hẳn so với trước.</p>
+      </div>
+      <div class="summary-block reveal">
+        <h3>🚧 Thách thức đã gặp</h3>
+        <ul class="challenge-list">
+          <li>Ban đầu khó hình dung cấu trúc Portfolio, phải làm đi làm lại nhiều lần</li>
+          <li>Đánh giá nguồn học thuật đòi hỏi nhiều thời gian và tiêu chí rõ ràng</li>
+          <li>Cân bằng giữa dùng AI hỗ trợ và đảm bảo sản phẩm vẫn là của bản thân</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="summary-block reveal">
+        <h3>📚 Kiến thức & Kỹ năng quan trọng nhất</h3>
+        <ul class="skill-list">
+          <li><b>Tư duy tổ chức dữ liệu</b> — Sắp xếp khoa học giúp tiết kiệm rất nhiều thời gian</li>
+          <li><b>Tìm kiếm học thuật</b> — Cần biết dùng toán tử và đánh giá nguồn tin</li>
+          <li><b>Prompt Engineering</b> — Cách đặt câu hỏi cho AI quyết định chất lượng kết quả</li>
+          <li><b>Sử dụng AI có trách nhiệm</b> — Kỹ năng quan trọng nhất trong thời đại hiện nay</li>
+          <li><b>Hợp tác số</b> — Công cụ trực tuyến giúp làm việc nhóm hiệu quả hơn</li>
+          <li><b>Sáng tạo nội dung với AI</b> — Tăng năng suất sáng tạo cá nhân</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NGUYÊN TẮC AI -->
+<section id="principles">
+  <div class="section-header reveal">
+    <span class="section-num">05 //</span>
+    <h2 class="section-title">Nguyên tắc sử dụng AI</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="principles-grid">
+    <div class="principle-card reveal">
+      <div class="principle-num">01</div>
+      <div><h4>Kiểm chứng thông tin</h4><p>Luôn kiểm chứng thông tin AI cung cấp từ nguồn đáng tin cậy trước khi sử dụng.</p></div>
+    </div>
+    <div class="principle-card reveal">
+      <div class="principle-num">02</div>
+      <div><h4>Minh bạch về AI</h4><p>Ghi rõ khi có sử dụng AI trong bài làm — không che giấu, đảm bảo liêm chính học thuật.</p></div>
+    </div>
+    <div class="principle-card reveal">
+      <div class="principle-num">03</div>
+      <div><h4>AI hỗ trợ, không thay thế</h4><p>Dùng AI để hỗ trợ tư duy, không để AI thay thế hoàn toàn suy nghĩ của bản thân.</p></div>
+    </div>
+    <div class="principle-card reveal">
+      <div class="principle-num">04</div>
+      <div><h4>Bảo vệ dữ liệu cá nhân</h4><p>Bảo vệ dữ liệu cá nhân và thông tin nhạy cảm khi sử dụng các công cụ AI.</p></div>
+    </div>
+    <div class="principle-card reveal">
+      <div class="principle-num">05</div>
+      <div><h4>Ưu tiên AI minh bạch</h4><p>Ưu tiên sử dụng các công cụ AI có chính sách rõ ràng và minh bạch về dữ liệu.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">NGUYỄN <span>TIẾN TÀI</span></div>
+  <p>Sinh viên Cơ điện tử · Trường Đại học Công nghệ ĐHQGHN (UET)</p>
+  <p>Môn: Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo · 2025–2026</p>
+  <p class="footer-email" style="margin-top:.8rem">25021446@vnu.edu.vn</p>
+  <p style="margin-top:1.5rem;font-size:.75rem;color:#3a4560">
+    Portfolio này được xây dựng bằng HTML/CSS/JS thuần · Thiết kế độc lập
+  </p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  // Parallax hero
+  window.addEventListener('scroll', () => {
+    const hero = document.getElementById('hero');
+    const y = window.scrollY;
+    hero.style.backgroundPositionY = y * 0.3 + 'px';
+  });
+</script>
+</body>
+</html>
