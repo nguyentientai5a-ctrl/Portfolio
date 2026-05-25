@@ -205,6 +205,8 @@
     cursor:default;
   }
   .project-card:hover { border-color: rgba(0,229,255,0.4); transform:translateY(-4px); }
+  
+  /* FIXED: Added pointer-events: none to prevent the hover pseudo-element from blocking click events */
   .project-card::before {
     content:''; position:absolute; inset:0;
     background: radial-gradient(circle at top left, rgba(0,229,255,0.06), transparent 60%);
@@ -443,7 +445,7 @@
       <div class="project-tags"><span class="tag">File System</span><span class="tag">Naming Convention</span></div>
       <div class="project-footer">
         <span class="file-type">PDF</span>
-        <a href="https://drive.google.com/uc?export=view&id=1CXosSZ_RJ9SdF4evCTpBGkbGPtbn1ByI" target="_blank" class="btn-download">↓ Xem bài tập</a>
+        <button onclick="openModal('https://drive.google.com/uc?export=view&id=1CXosSZ_RJ9SdF4evCTpBGkbGPtbn1ByI', 'Bài 1 — Quản lý tệp và thư mục')" class="btn-download">↓ Xem bài tập</button>
       </div>
     </div>
 
@@ -496,7 +498,7 @@
 
       <div class="project-footer">
         <span class="file-type">DOCX</span>
-        <a href="https://drive.google.com/uc?export=view&id=1GTf8PPB4uqVtWNop7IGDdpUFKxizXrBf" target="_blank" class="btn-download">↓ Xem bài tập</a>
+        <button onclick="openModal('https://drive.google.com/uc?export=view&id=1GTf8PPB4uqVtWNop7IGDdpUFKxizXrBf', 'Bài 2 — Tìm kiếm học thuật')" class="btn-download">↓ Xem bài tập</button>
       </div>
     </div>
 
@@ -539,7 +541,7 @@
 
       <div class="project-footer">
         <span class="file-type">PDF</span>
-        <a href="https://drive.google.com/uc?export=view&id=1X7oL6L4G1Lgf_dGCEs_qv2b7dkCAtmF0" target="_blank" class="btn-download">↓ Xem bài tập</a>
+        <button onclick="openModal('https://drive.google.com/uc?export=view&id=1X7oL6L4G1Lgf_dGCEs_qv2b7dkCAtmF0', 'Bài 3 — Viết Prompt hiệu quả')" class="btn-download">↓ Xem bài tập</button>
       </div>
     </div>
 
@@ -551,7 +553,7 @@
       <div class="project-tags"><span class="tag">Notion</span><span class="tag">Google Workspace</span><span class="tag">Collaboration</span></div>
       <div class="project-footer">
         <span class="file-type">DOCX</span>
-        <a href="https://docs.google.com/document/d/1apPhx2800jcRD3vJ34n3E8VTH5ZonT86/preview" target="_blank" class="btn-download">↓ Xem bài tập</a>
+        <button onclick="openModal('https://docs.google.com/document/d/1apPhx2800jcRD3vJ34n3E8VTH5ZonT86/preview', 'Bài 4 — Công cụ hợp tác trực tuyến')" class="btn-download">↓ Xem bài tập</button>
       </div>
     </div>
 
@@ -564,7 +566,7 @@
       <div class="project-footer">
         <span class="file-type">PDF · PPTX · PY</span>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
-          <a href="https://drive.google.com/uc?export=view&id=1lnOqiP3zcqbx9oqyCRMfNs5rCoNrQngx" target="_blank" class="btn-download">↓ Bài tập</a>
+          <button onclick="openModal('https://drive.google.com/uc?export=view&id=1lnOqiP3zcqbx9oqyCRMfNs5rCoNrQngx', 'Bài 5 — AI tạo sinh nội dung')" class="btn-download">↓ Bài tập</button>
           <a href="Python_Robot_NTT.pptx" download class="btn-download">↓ Slide PPTX</a>
           <a href="robot_simulation.py" download class="btn-download">↓ Code Python</a>
         </div>
@@ -579,7 +581,7 @@
       <div class="project-tags"><span class="tag">AI Ethics</span><span class="tag">Academic Integrity</span><span class="tag">Responsible AI</span></div>
       <div class="project-footer">
         <span class="file-type">PDF</span>
-        <a href="https://docs.google.com/document/d/1w-WKh0e-h-kemK6M65YPF4L6LAD1bhja/preview" target="_blank" class="btn-download">↓ Xem bài tập</a>
+        <button onclick="openModal('https://docs.google.com/document/d/1w-WKh0e-h-kemK6M65YPF4L6LAD1bhja/preview', 'Bài 6 — Sử dụng AI có trách nhiệm')" class="btn-download">↓ Xem bài tập</button>
       </div>
     </div>
 
@@ -708,6 +710,80 @@
     const y = window.scrollY;
     hero.style.backgroundPositionY = y * 0.3 + 'px';
   });
+
+  // Modal viewer
+  function openModal(url, title) {
+    const modal = document.getElementById('fileModal');
+    const iframe = document.getElementById('modalIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    // Google Drive: đổi sang embed
+    let embedUrl = url;
+    if (url.includes('drive.google.com/uc')) {
+      const id = url.match(/id=([^&]+)/)?.[1];
+      if (id) embedUrl = `https://drive.google.com/file/d/${id}/preview`;
+    }
+    if (url.includes('docs.google.com/document')) {
+      embedUrl = url.replace('/preview', '/preview');
+    }
+    iframe.src = embedUrl;
+    modalTitle.textContent = title;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('fileModal');
+    const iframe = document.getElementById('modalIframe');
+    iframe.src = '';
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Đóng khi click nền
+  document.getElementById('fileModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ESC để đóng
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
+
+<!-- MODAL -->
+<div id="fileModal" style="
+  display:none; position:fixed; inset:0; z-index:999;
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(8px);
+  align-items:center; justify-content:center;
+">
+  <div style="
+    background:#0e1525; border:1px solid rgba(0,229,255,0.2);
+    border-radius:16px; width:90%; max-width:900px; height:85vh;
+    display:flex; flex-direction:column; overflow:hidden;
+    box-shadow:0 24px 80px rgba(0,0,0,0.6);
+  ">
+    <!-- Header -->
+    <div style="
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.9rem 1.4rem; border-bottom:1px solid rgba(0,229,255,0.12);
+      background:#0a0f1a;
+    ">
+      <span id="modalTitle" style="font-family:'Be Vietnam Pro',sans-serif;font-weight:700;font-size:.95rem;color:#e8edf5;"></span>
+      <div style="display:flex;gap:.6rem;align-items:center;">
+        <button onclick="closeModal()" style="
+          background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+          color:#e8edf5; padding:.4rem 1rem; border-radius:6px;
+          font-family:'Be Vietnam Pro',sans-serif; font-size:.8rem; cursor:pointer;
+        ">✕ Đóng</button>
+      </div>
+    </div>
+    <!-- Iframe -->
+    <iframe id="modalIframe" src="" style="flex:1;border:none;width:100%;background:#fff;" allowfullscreen></iframe>
+  </div>
+</div>
+
+<style>
+  #fileModal { display:flex; opacity:0; pointer-events:none; transition:opacity .25s; }
+  #fileModal.active { opacity:1; pointer-events:all; }
+</style>
+
 </body>
 </html>
